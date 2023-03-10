@@ -1,0 +1,6 @@
+---
+# tasks file for packages
+- name: install yum packages
+  yum:
+    name: '{{ yum_apps }}'
+    state: present

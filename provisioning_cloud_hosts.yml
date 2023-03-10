@@ -1,0 +1,33 @@
+- name: Setup priv key
+  hosts: all
+  become: no
+  gather_facts: False
+  roles:
+    - role: ssh_auth
+      tags: ssh, never
+
+- name: Provisioning cloud host
+  hosts: all
+  become_user: root
+  gather_facts: False
+  vars:
+    become_user: "{{ privilege_user }}"
+  roles:
+    - role: docker
+      tags: docker
+    - role: packages
+      tags: packages
+    - role: user
+      tags: user
+    - role: supervisor
+      tags: supervisor
+
+      
+- name: Install user dependencies
+  hosts: all
+  become_user: "{{ privilege_user }}"
+  become: True
+  gather_facts: False
+  roles:
+    - role: pypi
+      tags: pypi

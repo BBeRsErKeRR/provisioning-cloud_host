@@ -1,0 +1,15 @@
+---
+# tasks file for pypi
+- name: install basic pip packages
+  pip:
+    extra_args: --user -U
+    name:
+      - pip
+      - setuptools
+    executable: pip3
+
+- name: install basic pip packages
+  pip:
+    extra_args: --user
+    name: "{{ pip_apps }}"
+    executable: pip3

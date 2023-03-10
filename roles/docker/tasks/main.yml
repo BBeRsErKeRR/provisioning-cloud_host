@@ -1,0 +1,28 @@
+---
+# tasks file for docker
+- name: Add docker repo
+  yum_repository:
+    name: docker-ce
+    description: docker-ce YUM repo
+    baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+    gpgcheck: no
+
+- name: install Docker packages
+  yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: Create daemon.json config
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+
+- name: Enable and start docker.service
+  systemd:
+    name: docker.service
+    state: started
+    enabled: yes
+    daemon_reload: yes

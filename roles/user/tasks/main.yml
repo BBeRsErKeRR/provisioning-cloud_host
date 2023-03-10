@@ -1,0 +1,33 @@
+---
+# tasks file for user
+- name: create share_group
+  group:
+    state: present
+    name: "{{ item }}"
+  with_items: [ "{{ share_group }}", "{{ become_user }}" ]
+
+- name: create external external_folders
+  file:
+    state: directory
+    group: "{{ share_group }}"
+    recurse: yes
+    path: "{{ item }}"
+    mode: u+rwx,g+rwx,o-rwx
+  with_items: "{{ external_folders }}"
+
+- name: Create user
+  user:
+    name: "{{ become_user }}"
+    group: "{{ share_group }}"
+    shell: /bin/bash
+    home: "{{ base_dir }}"
+    state: present
+    groups: [ "{{ share_group }}", "docker" ]
+
+- name: "Allow '{{ ansible_user }}' group to have passwordless sudo"
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%{{ become_user }}'
+    line: '%{{ become_user }} ALL=({{ ansible_user }}) ALL'
+    validate: 'visudo -cf %s'

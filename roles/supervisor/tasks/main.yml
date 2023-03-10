@@ -1,0 +1,44 @@
+---
+# tasks file for supervisor
+- name: install supervisor
+  yum:
+    name: 'supervisor'
+    state: present
+
+- name: Create basic conf
+  template:
+    src: supervisord.service
+    dest: /etc/systemd/system/supervisord.service
+    mode: u=rw,g=r,o=r
+
+- name: Create systemd.conf conf
+  template:
+    src: supervisord.conf
+    dest: /etc/supervisord.conf
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    mode: u=rw,g=r,o=r
+
+- name: Create main directory
+  file:
+    path: "{{ item }}"
+    owner: "{{ become_user }}"
+    group: "{{ become_user }}"
+    state: directory
+  with_items:
+    - "{{ base_dir }}/supervisor/log"
+    - "{{ base_dir }}/supervisor/run"
+    - "{{ base_dir }}/supervisor/units"
+
+- name: Enable supervisord
+  systemd:
+    state: restarted
+    name: supervisord
+    enabled: yes
+    daemon_reload: yes
+
+#- name: Disable supervisor.service
+#  systemd:
+#    state: stopped
+#    name: supervisor.service
+#    enabled: no

@@ -1,0 +1,32 @@
+yum_apps:
+  - tar
+  - zip
+  - unzip
+  - git
+  - java-1.8.0-openjdk
+  - wget
+  - htop
+  - mc
+  - jq
+  - telnet
+  - tree
+  - bind-utils
+  - yum-utils
+  - supervisor
+  - python-pip
+  - python3-pip
+  - python3-wheel
+  - python3-setuptools
+  - python3-libselinux
+
+pip_apps:
+  - "docker-compose==1.29.2"
+  - "pipenv==2021.5.29"
+  - "glances[docker]==3.1.4.1"
+
+external_folders:
+  - /data/logs
+  - /data/mibs
+
+share_group: shared_grp
+base_dir: "/data/{{ become_user }}"
