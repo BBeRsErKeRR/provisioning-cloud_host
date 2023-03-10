@@ -1,13 +1,3 @@
 {
-    "graph": "/docker",
-    "default-address-pools": [
-      {
-        "base": "192.165.0.0/16",
-        "size": 24
-      },
-      {
-        "base": "192.166.0.0/16",
-        "size": 24
-      }
-    ]
-  }
+    "graph": "/docker"
+}

@@ -1,4 +1,5 @@
 yum_apps:
+  - net-tools
   - tar
   - zip
   - unzip
